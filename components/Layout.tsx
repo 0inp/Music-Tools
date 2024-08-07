@@ -59,7 +59,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         >
           <div
             className={
-              "text-lg " + (page.isActive ? "text-orange-600" : "text-current")
+              "text-lg " + (page.isActive ? "text-primary" : "text-current")
             }
           >
             0{page.index}
