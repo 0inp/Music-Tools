@@ -69,7 +69,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             href={page.path}
             className={
               "text-xl origin-left translate-x-2/4 -rotate-90 justify-self-end " +
-              (page.isActive ? "text-orange-600" : "text-current")
+              (page.isActive ? "text-primary" : "text-current")
             }
           >
             {page.label}

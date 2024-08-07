@@ -1,4 +1,5 @@
 "use client";
+import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
@@ -68,19 +69,19 @@ export default function Page() {
 
   return (
     <div className="h-screen flex flex-col items-center w-full justify-center">
-      <h1 className="text-2xl py-8">Metronome</h1>
+      <h1 className="text-2xl py-8 text-primary">Metronome</h1>
       <div className="flex flex-col items-center justify-between w-2/4 h-2/4">
         <div
           id="metronome-tempo-section"
-          className="flex flex-col items-center justify-evenly w-full"
+          className="flex flex-col items-center justify-between w-full"
         >
           <div className="flex flex-row justify-evenly items-center w-full py-2">
-            <Button onClick={minusOneTempoHandler} variant="outline">
-              -
+            <Button onClick={minusOneTempoHandler} variant="ghost" size="icon">
+              <Minus />
             </Button>
             <div className="text-xl">{tempo}</div>
-            <Button onClick={plusOneTempoHandler} variant="outline">
-              +
+            <Button onClick={plusOneTempoHandler} variant="ghost" size="icon">
+              <Plus />
             </Button>
           </div>
           <Slider
@@ -136,7 +137,11 @@ export default function Page() {
           id="metronome-play-section"
           className="flex flex-row justify-evenly items-center w-full"
         >
-          <Button onClick={metronomePlayStopToggle} variant="outline">
+          <Button
+            onClick={metronomePlayStopToggle}
+            variant="outline"
+            className="text-xl"
+          >
             {isPlaying ? "Stop" : "Play"}
           </Button>
         </div>
