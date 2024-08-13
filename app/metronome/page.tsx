@@ -1,3 +1,4 @@
+// TODO: Animation (use animationCallback in MetronomeEngine)
 "use client";
 import { Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";

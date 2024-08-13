@@ -19,7 +19,7 @@ export const meterOptions: meterType[] = [
   { beatsPerMeasure: 5, beatDivision: 8, label: "5/8" },
   { beatsPerMeasure: 6, beatDivision: 8, label: "6/8" },
   { beatsPerMeasure: 7, beatDivision: 8, label: "7/8" },
-  { beatsPerMeasure: 7, beatDivision: 8, label: "7/8" },
+  { beatsPerMeasure: 9, beatDivision: 8, label: "9/8" },
   { beatsPerMeasure: 12, beatDivision: 8, label: "12/8" },
 ];
 
@@ -66,8 +66,6 @@ export default class MetronomeEngine {
   }
 
   private start() {
-    // if (this.playing) return;
-    //
     if (this.audioContext === undefined) {
       this.audioContext = new AudioContext();
     }
