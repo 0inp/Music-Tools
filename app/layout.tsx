@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
-import Layout from "@/components/Layout";
-// import { GeistSans } from "geist/font/sans";
-import { ThemeProvider } from "@/components/ThemeProvider";
+// Import styles of packages that you've installed.
+// All packages except `@mantine/hooks` require styles imports
+import "@mantine/core/styles.css";
+
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+
+import Layout from "@components/Layout";
 
 import "./globals.css";
 
@@ -17,15 +21,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <MantineProvider defaultColorScheme="dark">
           <Layout>{children}</Layout>
-        </ThemeProvider>
+        </MantineProvider>
       </body>
     </html>
   );

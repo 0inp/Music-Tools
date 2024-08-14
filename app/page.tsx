@@ -1,8 +1,10 @@
+import { Flex, Text, Title } from "@mantine/core";
+
 export default function Home() {
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
-      <h1 className="text-2xl py-8 text-primary">Music Tools</h1>
-      <p>A simple music toolbox for the musician</p>
-    </div>
+    <Flex direction="column" align="center" justify="center" h="100%">
+      <Title order={1}>Music Tools</Title>
+      <Text>A simple music toolbox for the musician</Text>
+    </Flex>
   );
 }
