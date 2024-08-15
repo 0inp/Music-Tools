@@ -1,25 +1,23 @@
 // TODO: Animation (use animationCallback in MetronomeEngine)
 "use client";
-import { Minus, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
 import {
+  ActionIcon,
+  Button,
+  Checkbox,
+  Group,
   Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import MetronomeEngine from "./metronomeEngine";
-import { meterOptions } from "./metronomeEngine";
+  Slider,
+  Stack,
+  Title,
+} from "@mantine/core";
+import { LuMinus, LuPlus } from "react-icons/lu";
+import MetronomeEngine, { meterOptions } from "./metronomeEngine";
 
 import { useEffect, useRef, useState } from "react";
 
 export default function Page() {
   // tempo
-  const [tempo, setTempo] = useState([70]);
+  const [tempo, setTempo] = useState(70);
 
   // Rythm
   const meterOptionsLabels: string[] = meterOptions.map((opt) => opt.label);
@@ -30,11 +28,11 @@ export default function Page() {
 
   // Handlers
   function minusOneTempoHandler(): void {
-    const newTempo: number = tempo[0] == 0 ? 0 : tempo[0] - 1;
+    const newTempo: number = tempo == 0 ? 0 : tempo - 1;
     tempoChangeHandler(newTempo);
   }
   function plusOneTempoHandler(): void {
-    const newTempo: number = tempo[0] == 250 ? 250 : tempo[0] + 1;
+    const newTempo: number = tempo == 250 ? 250 : tempo + 1;
     tempoChangeHandler(newTempo);
   }
   function meterChangeHandler(newMeter: string): void {
@@ -43,7 +41,7 @@ export default function Page() {
   }
   function tempoChangeHandler(newTempo: number): void {
     metronomeEngine.current.tempo = newTempo;
-    setTempo([newTempo]);
+    setTempo(newTempo);
   }
   function firstBeatChangeHandler(firstBeatChecked: boolean): void {
     metronomeEngine.current.pitchFirstBeat = firstBeatChecked;
@@ -58,9 +56,7 @@ export default function Page() {
   }
   // store instance of MetronomeEngine in a ref so that it persists between renders
   // the ref acts as the single source of truth for the metronome state
-  const metronomeEngine = useRef(
-    new MetronomeEngine(tempo[0], firstBeat, meter),
-  );
+  const metronomeEngine = useRef(new MetronomeEngine(tempo, firstBeat, meter));
   useEffect(() => {
     // Cleanup function to stop the metronome and remove the audio context
     return () => {
@@ -69,84 +65,77 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col items-center w-full justify-center">
-      <h1 className="text-2xl py-8 text-primary">Metronome</h1>
-      <div className="flex flex-col items-center justify-between w-2/4 h-2/4">
-        <div
+    <Stack align="center" justify="center" h="100%" w="100%">
+      <Title order={1} py="8">
+        Metronome
+      </Title>
+      <Stack align="center" justify="space-between" h="50%" w="50%">
+        <Stack
           id="metronome-tempo-section"
-          className="flex flex-col items-center justify-between w-full"
+          align="center"
+          justify="space-between"
+          w="100%"
         >
-          <div className="flex flex-row justify-evenly items-center w-full py-2">
-            <Button onClick={minusOneTempoHandler} variant="ghost" size="icon">
-              <Minus />
-            </Button>
-            <div className="text-xl">{tempo}</div>
-            <Button onClick={plusOneTempoHandler} variant="ghost" size="icon">
-              <Plus />
-            </Button>
-          </div>
+          <Group justify="space-evenly" w="80%" py="2">
+            <ActionIcon
+              onClick={minusOneTempoHandler}
+              variant="subtle"
+              size="lg"
+            >
+              <LuMinus />
+            </ActionIcon>
+            <Title order={2}>{tempo}</Title>
+            <ActionIcon
+              onClick={plusOneTempoHandler}
+              variant="subtle"
+              size="lg"
+            >
+              <LuPlus />
+            </ActionIcon>
+          </Group>
           <Slider
-            defaultValue={[70]}
+            value={tempo}
+            onChange={(newTempo: number): void => tempoChangeHandler(newTempo)}
             min={10}
             max={250}
             step={1}
-            value={tempo}
-            onValueChange={(newTempo: number[]): void =>
-              tempoChangeHandler(newTempo[0])
-            }
-            className="w-4/5 py-2"
+            color="orange"
+            showLabelOnHover={false}
+            w="80%"
+            py="2"
           />
-        </div>
-        <Separator />
-        <div
-          id="metronome-options-section"
-          className="flex flex-row justify-evenly items-center w-full"
-        >
+        </Stack>
+        <Group id="metronome-options-section" justify="space-evenly" w="100%">
           <Select
-            value={meter}
-            onValueChange={(newMeter: string) => meterChangeHandler(newMeter)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue>4/4</SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              {meterOptionsLabels.map((meterOption: string) => (
-                <SelectItem key={meterOption} value={meterOption}>
-                  {meterOption}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="first-beat-accent"
-              checked={firstBeat}
-              onCheckedChange={(checked: boolean) => {
-                firstBeatChangeHandler(checked);
-              }}
-            />
-            <label
-              htmlFor="first-beat-accent"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Accent first beat
-            </label>
-          </div>
-        </div>
-        <Separator />
-        <div
-          id="metronome-play-section"
-          className="flex flex-row justify-evenly items-center w-full"
-        >
-          <Button
-            onClick={metronomePlayStopToggle}
+            checkIconPosition="right"
+            data={meterOptionsLabels}
+            defaultValue={meter}
+            onChange={(newMeter, _) =>
+              meterChangeHandler(newMeter ? newMeter : "4/4")
+            }
+          ></Select>
+          <Checkbox
+            checked={firstBeat}
+            onChange={(event) =>
+              firstBeatChangeHandler(event.currentTarget.checked)
+            }
+            label="Accent first beat"
+            color="orange"
             variant="outline"
-            className="text-xl"
+          />
+        </Group>
+        {/* <Divider c="orange" /> */}
+        <Group id="metronome-play-section" justify="center" w="100%">
+          <Button
+            variant="filled"
+            color="orange"
+            size="md"
+            onClick={metronomePlayStopToggle}
           >
             {isPlaying ? "Stop" : "Play"}
           </Button>
-        </div>
-      </div>
-    </div>
+        </Group>
+      </Stack>
+    </Stack>
   );
 }

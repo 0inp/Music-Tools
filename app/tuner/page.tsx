@@ -1,8 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { Slider } from "@/components/ui/slider";
+import { Button, Slider, Stack, Text, Title } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import TunerEngine from "./tunerEngine";
 
@@ -36,28 +34,45 @@ export default function Page() {
   }
 
   return (
-    <div className="h-screen flex flex-col items-center w-full justify-center">
-      <h1 className="text-2xl py-8 text-primary">Tuner</h1>
-      <div className="flex flex-col items-center justify-between w-2/4 h-2/4">
-        <div
-          id="tuner-note-section"
-          className="flex flex-row items-center justify-center w-full"
+    <Stack align="center" justify="center" h="100%" w="100%">
+      <Title order={1} py="8">
+        Tuner
+      </Title>
+      <Stack align="center" justify="space-between" h="50%" w="50%">
+        <Text>
+          {note} {noteOctave}
+        </Text>
+        <Slider
+          value={detune}
+          disabled
+          min={-50}
+          max={50}
+          step={1}
+          marks={[
+            { value: -50, label: "-50 cents off" },
+            { value: 0, label: "In-Tune" },
+            { value: 50, label: "+50 cents off" },
+          ]}
+          showLabelOnHover={false}
+          w="80%"
+          py={2}
+          size="sm"
+          styles={{
+            bar: {
+              backgroundColor: "orange",
+            },
+          }}
+        />
+        <Button
+          onClick={tunerPlayStopToggle}
+          variant="filled"
+          color="orange"
+          size="md"
+          my="8"
         >
-          <p className="mx-1 text-2xl">{note}</p>
-          <p className="mx-1 text-lg self-end">{noteOctave}</p>
-        </div>
-        <Separator />
-        <div
-          id="tuner-graphic-section"
-          className="flex flex-row items-center justify-between w-full"
-        >
-          <Slider value={[detune + 50]} disabled={true} />
-        </div>
-        <Separator />
-        <Button onClick={tunerPlayStopToggle} className="my-8 text-xl">
           {isPlaying ? "Stop" : "Tune"}
         </Button>
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   );
 }

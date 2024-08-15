@@ -2,6 +2,14 @@
 
 Welcome to a simple musician toolbox
 
+Accessible on : [Music Tools](https://music-tools-pink.vercel.app/tuner)
+
+## Tech Stack
+
+- Typescript/React
+- MantineUI/Tailwindcss
+- Deploy on vercel
+
 ## Features
 
 ### Metronome
